@@ -10,16 +10,19 @@ const vuetify = createVuetify({
   components,
   directives,
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
         colors: {
-          primary: '#1976D2',
-          secondary: '#424242',
-          accent: '#82B1FF',
-          error: '#FF5252',
-          warning: '#FBC02D',
-          info: '#2196F3',
-          success: '#4CAF50'
+          primary: '#1F3A93',        // Deep Blue - Sang trọng
+          secondary: '#06D6A0',      // Teal Green - Tươi mới
+          accent: '#FFB84D',         // Gold - Nổi bật
+          background: '#FAFBFC',     // Soft White
+          surface: '#FFFFFF',        // Pure White
+          error: '#E53935',          // Red
+          warning: '#FB8500',        // Orange
+          info: '#00A6D6',           // Cyan
+          success: '#06D6A0'         // Teal
         }
       }
     }

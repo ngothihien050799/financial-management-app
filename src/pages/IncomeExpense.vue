@@ -8,23 +8,25 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-btn
-                  color="success"
+                  class="income-btn mb-4"
                   block
-                  class="mb-4"
+                  size="large"
+                  elevation="2"
                   @click="openAddDialog('income')"
                 >
-                  <v-icon left>mdi-plus</v-icon>
+                  <v-icon left>mdi-plus-circle</v-icon>
                   Thêm Thu Nhập
                 </v-btn>
               </v-col>
               <v-col cols="12" md="6">
                 <v-btn
-                  color="error"
+                  class="expense-btn mb-4"
                   block
-                  class="mb-4"
+                  size="large"
+                  elevation="2"
                   @click="openAddDialog('expense')"
                 >
-                  <v-icon left>mdi-plus</v-icon>
+                  <v-icon left>mdi-minus-circle</v-icon>
                   Thêm Chi Tiêu
                 </v-btn>
               </v-col>
@@ -406,15 +408,120 @@ const confirmDelete = async () => {
 
 <style scoped>
 .income-expense {
-  padding: 20px 0;
+  padding: 0;
 }
 
-v-btn {
+/* Card styling */
+:deep(.v-card) {
+  border-radius: 16px;
   transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
 }
 
+:deep(.v-card):hover {
+  box-shadow: 0 8px 16px rgba(31, 58, 147, 0.12) !important;
+}
+
+:deep(.v-card-title) {
+  background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+  color: white;
+  padding: 20px 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Button styling */
+:deep(.v-btn) {
+  text-transform: none;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+/* Income button */
+:deep(.income-btn) {
+  background: linear-gradient(135deg, #4caf50 0%, #06d6a0 100%) !important;
+}
+
+:deep(.income-btn):hover {
+  box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+:deep(.expense-btn) {
+  background: linear-gradient(135deg, #f44336 0%, #ff6f00 100%) !important;
+}
+
+:deep(.expense-btn):hover {
+  box-shadow: 0 8px 16px rgba(244, 67, 54, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Form fields */
+:deep(.v-text-field) {
+  border-radius: 8px;
+}
+
+:deep(.v-select) {
+  border-radius: 8px;
+}
+
+/* Table styling */
+:deep(.v-table) {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+:deep(.v-table thead tr) {
+  background: linear-gradient(135deg, #f0f2f5 0%, #e8eaf0 100%);
+  font-weight: 700;
+  color: #1f3a93;
+}
+
+:deep(.v-table tbody tr) {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e8eaed;
+}
+
+:deep(.v-table tbody tr):hover {
+  background-color: rgba(31, 58, 147, 0.04);
+}
+
+:deep(.v-chip) {
+  font-weight: 600;
+}
+
+/* Dialog styling */
+:deep(.v-dialog .v-card) {
+  border-radius: 16px;
+}
+
+:deep(.v-dialog .v-card-title) {
+  background: linear-gradient(135deg, #1f3a93 0%, #06d6a0 100%);
+}
+
+/* Error styling */
 .error-text {
-  color: #d32f2f;
+  color: #e53935;
   font-size: 14px;
+  font-weight: 500;
+}
+
+/* Action buttons in table */
+:deep(.v-btn.action-btn) {
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+:deep(.v-btn.action-btn):hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  :deep(.v-card-text) {
+    padding: 16px;
+  }
 }
 </style>
