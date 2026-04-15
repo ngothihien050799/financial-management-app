@@ -1,5 +1,16 @@
+export interface Wallet {
+  id: string
+  name: string
+  description: string
+  icon: string
+  balance: number
+  createdAt: Date
+  updatedAt: Date
+}
+
 export interface Transaction {
   id: string
+  walletId: string
   type: 'income' | 'expense'
   category: string
   amount: number
@@ -32,6 +43,7 @@ export interface MonthlyData {
 }
 
 export interface TransactionFilters {
+  walletId?: string
   type?: 'income' | 'expense'
   category?: string
   startDate?: string

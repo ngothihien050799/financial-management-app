@@ -368,6 +368,7 @@ const saveTransaction = async () => {
     } else {
       await store.addTransaction({
         ...formData.value,
+        walletId: store.currentWalletId.value,
         date: new Date(formData.value.date).toISOString(),
       });
     }
