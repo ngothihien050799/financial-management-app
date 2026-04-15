@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Tạo Desktop Shortcut - Hướng Dẫn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .method {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .method:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .method h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-icon {
+            font-size: 24px;
+        }
+
+        .steps {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .steps ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .steps li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .step-bold {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .highlight {
+            background: #fff9e6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #d32f2f;
+            font-weight: 500;
+        }
+
+        .tip {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #1565c0;
+        }
+
+        .tip strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #0d47a1;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #2e7d32;
+        }
+
+        .success-box strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .comp-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .comp-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .comp-item p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .difficulty.easy {
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        .difficulty.medium {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+
+        .file-list {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .file-list-item {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-icon {
+            font-size: 16px;
+        }
+
+        .file-name {
+            font-weight: 500;
+        }
+
+        .file-desc {
+            color: #999;
+            font-size: 12px;
+            margin-left: 24px;
+            font-style: italic;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .footer {
+            background: #f5f5f5;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .emoji-large {
+            font-size: 48px;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #e65100;
+        }
+
+        .warning strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .method {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji-large">💰</div>
+            <h1>Desktop Shortcut Guide</h1>
+            <p>Hướng dẫn tạo Shortcut trên Desktop</p>
+        </div>
+
+        <div class="content">
+            <!-- Available Files -->
+            <h2 style="margin-bottom: 15px; color: #333;">📁 Các tệp tin hỗ trợ</h2>
+            <div class="file-list">
+                <div class="file-list-item">
+                    <span class="file-icon">📄</span>
+                    <div>
+                        <span class="file-name">create-desktop-shortcut.bat</span>
+                        <div class="file-desc">Tạo shortcut tự động - Cách dễ nhất!</div>
+                    </div>
+                </div>
+                <div class="file-list-item">
+                    <span class="file-icon">🐍</span>
+                    <div>
+                        <span class="file-name">create-shortcut.ps1</span>
+                        <div class="file-desc">Script PowerShell - Yêu cầu chạy như Admin</div>
+                    </div>
+                </div>
+                <div class="file-list-item">
+                    <span class="file-icon">▶️</span>
+                    <div>
+                        <span class="file-name">start-app.bat</span>
+                        <div class="file-desc">Chương trình chính - Khởi động server</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Method 1 -->
+            <div class="method">
+                <h3>
+                    <span class="method-icon">✨</span>
+                    Phương pháp 1: Auto-Create Shortcut (DỄ NHẤT) 🌟
+                </h3>
+                <div class="steps">
+                    <ol>
+                        <li>Mở thư mục dự án: <span class="highlight">C:\ADMIN\Code CPC1HN\testai</span></li>
+                        <li>Tìm file: <span class="step-bold">create-desktop-shortcut.bat</span></li>
+                        <li><span class="step-bold">Double-click</span> vào file này</li>
+                        <li>Một cửa sổ Command Prompt sẽ mở và tự động tạo shortcut</li>
+                        <li>Nhấn <span class="step-bold">Enter</span> khi hoàn tất</li>
+                        <li>Kiểm tra Desktop - Shortcut "💰 Financial Management" sẽ xuất hiện!</li>
+                    </ol>
+                </div>
+                <div class="success-box">
+                    ✓ <strong>Hoàn tất!</strong> Shortcut đã sẵn sàng trên Desktop. Double-click để khởi động ứng dụng.
+                </div>
+                <span class="difficulty easy">⭐ DỄ - Không cần Admin</span>
+            </div>
+
+            <!-- Method 2 -->
+            <div class="method">
+                <h3>
+                    <span class="method-icon">⚡</span>
+                    Phương pháp 2: PowerShell Script
+                </h3>
+                <div class="steps">
+                    <ol>
+                        <li>Mở PowerShell <span class="step-bold">chạy như Admin</span></li>
+                        <li>Chuyển đến thư mục dự án:</li>
+                    </ol>
+                </div>
+                <div class="code-block">cd C:\ADMIN\Code CPC1HN\testai</div>
+                <div class="steps">
+                    <ol start="3">
+                        <li>Chạy script:</li>
+                    </ol>
+                </div>
+                <div class="code-block">.\create-shortcut.ps1</div>
+                <div class="steps">
+                    <ol start="4">
+                        <li>Chờ thông báo thành công</li>
+                        <li>Shortcut sẽ xuất hiện trên Desktop</li>
+                    </ol>
+                </div>
+                <div class="tip">
+                    <strong>💡 Tip:</strong> Nếu gặp lỗi "cannot be loaded because running scripts is disabled", chạy:<br><br>
+                    <code style="background: #f0f0f0; padding: 2px 4px; border-radius: 3px;">
+                        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+                    </code>
+                </div>
+                <span class="difficulty medium">⚡ TRUNG BÌNH - Yêu cầu Admin</span>
+            </div>
+
+            <!-- Method 3 -->
+            <div class="method">
+                <h3>
+                    <span class="method-icon">🖱️</span>
+                    Phương pháp 3: Send To Desktop
+                </h3>
+                <div class="steps">
+                    <ol>
+                        <li>Tìm file: <span class="step-bold">start-app.bat</span> trong thư mục dự án</li>
+                        <li><span class="step-bold">Nhấp chuột phải</span> vào file</li>
+                        <li>Chọn: <span class="step-bold">Send to</span> → <span class="step-bold">Desktop (create shortcut)</span></li>
+                        <li>Shortcut sẽ tự động xuất hiện trên Desktop</li>
+                    </ol>
+                </div>
+                <div class="success-box">
+                    ✓ Shortcut tạo xong! Sau đó có thể đổi tên và icon.
+                </div>
+                <span class="difficulty easy">⭐ DỄ - 1 cú click</span>
+            </div>
+
+            <!-- Method 4 -->
+            <div class="method">
+                <h3>
+                    <span class="method-icon">🔧</span>
+                    Phương pháp 4: Manual - Tạo Shortcut Thủ Công
+                </h3>
+                <div class="steps">
+                    <ol>
+                        <li><span class="step-bold">Nhấp chuột phải</span> trên Desktop (vùng trống)</li>
+                        <li>Chọn: <span class="step-bold">New</span> → <span class="step-bold">Shortcut</span></li>
+                        <li>Paste đường dẫn sau:</li>
+                    </ol>
+                </div>
+                <div class="code-block">cmd.exe /c "C:\ADMIN\Code CPC1HN\testai\start-app.bat"</div>
+                <div class="steps">
+                    <ol start="4">
+                        <li>Nhấp <span class="step-bold">Next</span></li>
+                        <li>Đặt tên: <span class="step-bold">💰 Financial Management</span></li>
+                        <li>Nhấp <span class="step-bold">Finish</span></li>
+                        <li>(Tùy chọn) Nhấp chuột phải shortcut → Properties → Change Icon</li>
+                    </ol>
+                </div>
+                <span class="difficulty medium">⚡ TRUNG BÌNH - Nhiều bước</span>
+            </div>
+
+            <!-- Comparison -->
+            <h2 style="margin-top: 40px; margin-bottom: 20px; color: #333;">⚖️ So sánh các phương pháp</h2>
+            <div class="comparison">
+                <div class="comp-item">
+                    <h4>✨ Auto-Create (Phương pháp 1)</h4>
+                    <p>
+                        🏆 Được khuyến nghị<br>
+                        ⭐⭐⭐⭐⭐ Dễ sử dụng<br>
+                        ⏱️ Nhanh nhất
+                    </p>
+                </div>
+                <div class="comp-item">
+                    <h4>⚡ PowerShell</h4>
+                    <p>
+                        💪 Linh hoạt<br>
+                        ⭐⭐⭐ Trung bình<br>
+                        👤 Yêu cầu Admin
+                    </p>
+                </div>
+                <div class="comp-item">
+                    <h4>🖱️ Send To</h4>
+                    <p>
+                        ✓ Nhanh<br>
+                        ⭐⭐⭐⭐ Rất dễ<br>
+                        1️⃣ Một cú click
+                    </p>
+                </div>
+                <div class="comp-item">
+                    <h4>🔧 Manual</h4>
+                    <p>
+                        🎨 Tùy chỉnh<br>
+                        ⭐⭐⭐ Trung bình<br>
+                        📝 Rất chi tiết
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tips & Tricks -->
+            <h2 style="margin-top: 40px; margin-bottom: 20px; color: #333;">💡 Mẹo & Thủ Thuật</h2>
+
+            <div class="tip">
+                <strong>📌 Pin to Start Menu</strong>
+                Sau khi tạo shortcut, bạn có thể:<br>
+                1. Nhấp chuột phải shortcut<br>
+                2. Chọn "Pin to Start"<br>
+                3. Shortcut sẽ xuất hiện trong Start Menu cho lần sau
+            </div>
+
+            <div class="tip" style="margin-top: 15px;">
+                <strong>⌨️ Keyboard Shortcut</strong>
+                Bạn có thể đặt phím tắt:<br>
+                1. Nhấp chuột phải shortcut → Properties<br>
+                2. Tìm trường "Shortcut key"<br>
+                3. Nhập tổ hợp phím (ví dụ: Ctrl+Alt+M)<br>
+                4. Nhấp Apply rồi OK
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Lưu ý quan trọng</strong>
+                Đảm bảo file <span class="highlight">start-app.bat</span> không bị di chuyển hoặc xóa, nếu không shortcut sẽ không hoạt động.
+            </div>
+
+            <!-- Usage -->
+            <h2 style="margin-top: 40px; margin-bottom: 20px; color: #333;">🚀 Cách sử dụng Shortcut</h2>
+            <div class="steps">
+                <ol>
+                    <li>Tìm shortcut "💰 Financial Management" trên Desktop</li>
+                    <li><span class="step-bold">Double-click</span> shortcut</li>
+                    <li>Cửa sổ Command sẽ mở và khởi động server</li>
+                    <li>Browser sẽ tự động mở ứng dụng tại: <span class="highlight">http://localhost:5173</span></li>
+                    <li>Bắt đầu sử dụng ứng dụng quản lý tài chính!</li>
+                </ol>
+            </div>
+
+            <div class="success-box">
+                ✓ <strong>Hoàn thành!</strong> Bây giờ bạn có thể khởi động ứng dụng chỉ bằng một cú double-click trên Desktop. 🎉
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💰 Financial Management Dashboard | Hỗ trợ: Xem file QUICK-START.md hoặc README.md</p>
+            <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                Tạo ngày: 2026 | Được cập nhật: April 15, 2026
+            </p>
+        </div>
+    </div>
+</body>
+</html>

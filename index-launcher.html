@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Financial Management Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 600px;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        .status {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .status-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+            border-color: #667eea;
+        }
+
+        .btn-disabled {
+            background: #ccc;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1565c0;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #0d47a1;
+        }
+
+        .instruction {
+            text-align: left;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .instruction h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .instruction ol {
+            color: #666;
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .instruction li {
+            margin-bottom: 10px;
+        }
+
+        .link-group {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .link-group a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid #667eea;
+        }
+
+        .link-group a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .error-message {
+            display: none;
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #c62828;
+        }
+
+        .success-message {
+            display: none;
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">💰</div>
+        <h1>Financial Management Dashboard</h1>
+        <p class="subtitle">Quản lý thu chi tài chính thông minh</p>
+
+        <div id="successMessage" class="success-message">
+            ✓ Ứng dụng đã sẵn sàng! Nhấn nút bên dưới để truy cập.
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="status">
+            <div class="status-text">Trạng thái server:</div>
+            <div class="server-status">
+                <span class="status-dot"></span>
+                <span>Chạy tại localhost:5173</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>ℹ️ Thông tin quan trọng:</strong>
+            Đảm bảo bạn đã chạy file <strong>start-app.bat</strong> trước khi truy cập ứng dụng.
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="openApp()">
+                🌐 Mở Ứng Dụng (http://localhost:5173)
+            </button>
+            <button class="btn-secondary" onclick="openDocs()">
+                📖 Hướng Dẫn
+            </button>
+        </div>
+
+        <div class="instruction">
+            <h3>📋 Hướng dẫn sử dụng:</h3>
+            <ol>
+                <li>Đảm bảo file <strong>start-app.bat</strong> đang chạy</li>
+                <li>Nếu chưa chạy, double-click vào file trong thư mục dự án</li>
+                <li>Nhấn nút "Mở Ứng Dụng" bên trên</li>
+                <li>Hoặc truy cập trực tiếp: <strong>http://localhost:5173</strong></li>
+            </ol>
+        </div>
+
+        <div class="link-group">
+            <a href="http://localhost:5173" target="_blank">App</a>
+            <a href="http://localhost:5173" target="_blank">Dashboard</a>
+            <a href="QUICK-START.md">Quick Start</a>
+            <a href="SETUP.md">Setup Guide</a>
+            <a href="README.md">Tài liệu</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if server is running
+        function checkServer() {
+            fetch('http://localhost:5173', {
+                method: 'HEAD',
+                mode: 'no-cors'
+            })
+            .then(() => {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+            })
+            .catch(() => {
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').innerHTML = 
+                    '⚠️ <strong>Server chưa chạy!</strong><br>' +
+                    'Vui lòng chạy file <strong>start-app.bat</strong> trước.';
+            });
+        }
+
+        // Open app
+        function openApp() {
+            window.open('http://localhost:5173', '_blank');
+        }
+
+        // Open docs
+        function openDocs() {
+            window.location.href = 'QUICK-START.md';
+        }
+
+        // Check server status on page load
+        window.addEventListener('load', () => {
+            checkServer();
+            // Recheck every 5 seconds
+            setInterval(checkServer, 5000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                openApp();
+            }
+        });
+    </script>
+</body>
+</html>
