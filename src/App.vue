@@ -4,7 +4,10 @@
     <v-app-bar
       app
       elevation="4"
-      style="background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%)"
+      style="
+        background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+        padding-top: max(0px, env(safe-area-inset-top));
+      "
     >
       <div class="d-flex align-center w-100">
         <div class="app-title">
@@ -408,10 +411,14 @@ onMounted(async () => {
 
 .modern-drawer {
   background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 .drawer-header {
   padding: 20px 24px;
+  padding-top: max(20px, env(safe-area-inset-top));
   background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
   color: white;
   border-radius: 0 0 16px 0;
@@ -479,5 +486,46 @@ onMounted(async () => {
   .wallet-btn {
     padding: 0 12px !important;
   }
+
+  :deep(.v-app-bar) {
+    padding-top: max(8px, env(safe-area-inset-top)) !important;
+    padding-bottom: 8px !important;
+  }
+
+  .drawer-header {
+    padding: 24px;
+    padding-top: max(24px, calc(env(safe-area-inset-top) + 16px));
+  }
+
+  .modern-drawer {
+    padding-top: env(safe-area-inset-top) !important;
+  }
+}
+</style>
+
+<style>
+/* Global safe area support */
+:root {
+  --safe-area-inset-top: max(0px, env(safe-area-inset-top));
+  --safe-area-inset-bottom: max(0px, env(safe-area-inset-bottom));
+  --safe-area-inset-left: max(0px, env(safe-area-inset-left));
+  --safe-area-inset-right: max(0px, env(safe-area-inset-right));
+}
+
+/* Ensure proper viewport behavior on mobile devices */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>
