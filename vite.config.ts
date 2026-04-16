@@ -11,6 +11,32 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true
+    open: true,
+    host: true
+  },
+  build: {
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vue': ['vue'],
+          'vuetify': ['vuetify'],
+          'chart': ['chart.js']
+        }
+      }
+    },
+    sourcemap: false,
+    reportCompressedSize: false
+  },
+  optimizeDeps: {
+    include: ['vue', 'vuetify', 'chart.js', 'vue-chartjs']
   }
 })
+

@@ -1,13 +1,93 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+    <meta name="theme-color" content="#1f3a93" />
+    <meta name="description" content="A modern financial management application for tracking income, expenses, and financial analytics" />
+    <meta name="keywords" content="finance, dashboard, budget, expenses, income, analytics" />
+    <meta name="author" content="Financial App Team" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Apple Web App Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Finance Hub" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    
+    <!-- Additional Windows Support -->
+    <meta name="msapplication-TileColor" content="#1f3a93" />
+    <meta name="msapplication-TileImage" content="/icon-192.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Splashscreens for iOS -->
+    <!-- iPhone XS Max -->
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="/splash-screens/iphone-12-pro-max.png" />
+    <!-- iPhone XS -->
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="/splash-screens/iphone-12-pro.png" />
+    
     <title>Financial Management Dashboard</title>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker registered:', registration);
+              
+              // Check for updates periodically
+              setInterval(() => {
+                registration.update();
+              }, 60000); // Check every 60 seconds
+            })
+            .catch(error => {
+              console.error('Service Worker registration failed:', error);
+            });
+        });
+      }
+      
+      // Install prompt for PWA
+      let deferredPrompt;
+      const installBtn = document.getElementById('install-btn');
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        if (installBtn) {
+          installBtn.style.display = 'block';
+          installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+              deferredPrompt.prompt();
+              deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                  console.log('User accepted PWA installation');
+                } else {
+                  console.log('User declined PWA installation');
+                }
+                deferredPrompt = null;
+              });
+            }
+          });
+        }
+      });
+      
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        deferredPrompt = null;
+      });
+    </script>
   </body>
 </html>

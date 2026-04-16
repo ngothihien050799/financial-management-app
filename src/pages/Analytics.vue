@@ -236,22 +236,53 @@ const initializeExpenseAnalysis = () => {
           backgroundColor: metrics.value.expenseByCategory.map((item) =>
             getCategoryColor(item.category),
           ),
-          borderRadius: 8,
+          borderRadius: 12,
+          borderWidth: 0,
+          hoverBackgroundColor: metrics.value.expenseByCategory.map(
+            (item) => getCategoryColor(item.category) + "dd",
+          ),
+          borderSkipped: false,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      animation: {
+        duration: 1200,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: {
           display: false,
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: 12,
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderWidth: 1,
+          callbacks: {
+            label: function (context: any) {
+              const value = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(context.parsed.y);
+              return `${value}`;
+            },
+          },
         },
       },
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+            drawBorder: false,
+          },
           ticks: {
+            font: { size: 12 },
             callback: function (value) {
               return new Intl.NumberFormat("vi-VN", {
                 notation: "compact",
@@ -259,6 +290,10 @@ const initializeExpenseAnalysis = () => {
               }).format(value as number);
             },
           },
+        },
+        x: {
+          grid: { display: false, drawBorder: false },
+          ticks: { font: { size: 12 } },
         },
       },
     },
@@ -284,22 +319,53 @@ const initializeIncomeAnalysis = () => {
           backgroundColor: metrics.value.incomeByCategory.map((item) =>
             getCategoryColor(item.category),
           ),
-          borderRadius: 8,
+          borderRadius: 12,
+          borderWidth: 0,
+          hoverBackgroundColor: metrics.value.incomeByCategory.map(
+            (item) => getCategoryColor(item.category) + "dd",
+          ),
+          borderSkipped: false,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      animation: {
+        duration: 1200,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: {
           display: false,
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: 12,
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderWidth: 1,
+          callbacks: {
+            label: function (context: any) {
+              const value = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(context.parsed.y);
+              return `${value}`;
+            },
+          },
         },
       },
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+            drawBorder: false,
+          },
           ticks: {
+            font: { size: 12 },
             callback: function (value) {
               return new Intl.NumberFormat("vi-VN", {
                 notation: "compact",
@@ -307,6 +373,10 @@ const initializeIncomeAnalysis = () => {
               }).format(value as number);
             },
           },
+        },
+        x: {
+          grid: { display: false, drawBorder: false },
+          ticks: { font: { size: 12 } },
         },
       },
     },
@@ -332,28 +402,66 @@ const initializeComparison = () => {
           label: "Thu Nhập",
           data: monthlyData.map((m) => m.income),
           backgroundColor: "#4CAF50",
-          borderRadius: [8, 8, 0, 0],
+          borderRadius: [12, 12, 0, 0],
+          borderSkipped: false,
+          borderWidth: 0,
+          hoverBackgroundColor: "#45a049",
         },
         {
           label: "Chi Tiêu",
           data: monthlyData.map((m) => m.expense),
           backgroundColor: "#f44336",
-          borderRadius: [8, 8, 0, 0],
+          borderRadius: [12, 12, 0, 0],
+          borderSkipped: false,
+          borderWidth: 0,
+          hoverBackgroundColor: "#d32f2f",
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      animation: {
+        duration: 1200,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: {
           position: "top",
+          labels: {
+            font: { size: 13, weight: "normal" },
+            padding: 15,
+            usePointStyle: true,
+            pointStyle: "circle",
+          },
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: 12,
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderWidth: 1,
+          callbacks: {
+            label: function (context: any) {
+              const value = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(context.parsed.y);
+              return `${context.dataset.label}: ${value}`;
+            },
+          },
         },
       },
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+            drawBorder: false,
+          },
           ticks: {
+            font: { size: 12 },
             callback: function (value) {
               return new Intl.NumberFormat("vi-VN", {
                 notation: "compact",
@@ -361,6 +469,10 @@ const initializeComparison = () => {
               }).format(value as number);
             },
           },
+        },
+        x: {
+          grid: { display: false, drawBorder: false },
+          ticks: { font: { size: 12 } },
         },
       },
     },
@@ -393,59 +505,127 @@ watch(
 <style scoped>
 .analytics {
   padding: 20px 0;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .chart-container {
   position: relative;
   height: 300px;
   margin: 20px 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
 }
 
 .summary-box {
-  padding: 20px;
-  border-radius: 8px;
+  padding: 24px;
+  border-radius: 16px;
   background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2196f3, transparent);
 }
 
 .summary-box:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .summary-label {
-  font-size: 12px;
-  color: #666;
+  font-size: 11px;
+  color: #9e9e9e;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .summary-value {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #333 0%, #555 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .income-color {
-  color: #4caf50;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .expense-color {
-  color: #f44336;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.text-muted {
-  color: #999;
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .analytics {
+    padding: 12px 0;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .summary-box {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .summary-value {
+    font-size: 18px;
+  }
+
+  .summary-label {
+    font-size: 10px;
+  }
 }
 
-.text-right {
-  text-align: right;
-}
+@media (max-width: 480px) {
+  .analytics {
+    padding: 8px 0;
+  }
 
-.font-weight-bold {
-  font-weight: 700;
+  .chart-container {
+    height: 200px;
+  }
+
+  .summary-box {
+    padding: 12px;
+  }
+
+  .summary-value {
+    font-size: 16px;
+  }
 }
 </style>

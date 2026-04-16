@@ -223,6 +223,19 @@ const initializePieChart = (
 ) => {
   if (!canvasRef) return;
 
+  const colors = [
+    "#FF6B6B",
+    "#4ECDC4",
+    "#45B7D1",
+    "#FFA07A",
+    "#98D8C8",
+    "#F7DC6F",
+    "#BB8FCE",
+    "#85C1E2",
+    "#F8B88B",
+    "#A9DFBF",
+  ];
+
   const chart = new Chart(canvasRef, {
     type: "doughnut",
     data: {
@@ -232,27 +245,51 @@ const initializePieChart = (
       datasets: [
         {
           data: data.map((item) => item.total),
-          backgroundColor: [
-            "#FF6384",
-            "#36A2EB",
-            "#FFCE56",
-            "#4BC0C0",
-            "#9966FF",
-            "#FF9F40",
-            "#FF6384",
-            "#C9CBCF",
-          ],
+          backgroundColor: colors,
           borderColor: "#fff",
-          borderWidth: 2,
+          borderWidth: 3,
+          hoverBorderWidth: 5,
+          hoverOffset: 8,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      animation: {
+        animateRotate: true,
+        animateScale: false,
+        duration: 1000,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: {
           position: "bottom",
+          labels: {
+            font: { size: 13, weight: "normal" },
+            padding: 15,
+            usePointStyle: true,
+            pointStyle: "circle",
+          },
+          onClick: null,
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: 12,
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderWidth: 1,
+          displayColors: true,
+          callbacks: {
+            label: function (context: any) {
+              const value = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(context.parsed);
+              return `${context.label.split("(")[0].trim()}: ${value}`;
+            },
+          },
         },
       },
     },
@@ -279,43 +316,108 @@ const initializeLineChart = () => {
           label: "Thu Nhập",
           data: monthlyData.map((m) => m.income),
           borderColor: "#4CAF50",
-          backgroundColor: "rgba(76, 175, 80, 0.1)",
-          tension: 0.4,
+          backgroundColor: "rgba(76, 175, 80, 0.15)",
+          borderWidth: 3,
+          tension: 0.5,
           fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: "#4CAF50",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
         },
         {
           label: "Chi Tiêu",
           data: monthlyData.map((m) => m.expense),
           borderColor: "#f44336",
-          backgroundColor: "rgba(244, 67, 54, 0.1)",
-          tension: 0.4,
+          backgroundColor: "rgba(244, 67, 54, 0.15)",
+          borderWidth: 3,
+          tension: 0.5,
           fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: "#f44336",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
         },
         {
           label: "Số Dư",
           data: monthlyData.map((m) => m.balance),
           borderColor: "#2196F3",
-          backgroundColor: "rgba(33, 150, 243, 0.1)",
-          tension: 0.4,
-          fill: false,
+          backgroundColor: "rgba(33, 150, 243, 0.15)",
+          borderWidth: 3,
+          tension: 0.5,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: "#2196F3",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
+      animation: {
+        duration: 1500,
+        easing: "easeInOutQuart",
+      },
       plugins: {
         legend: {
           position: "top",
+          labels: {
+            font: { size: 13, weight: "normal" },
+            padding: 15,
+            usePointStyle: true,
+            pointStyle: "circle",
+          },
+          onClick: null,
+        },
+        tooltip: {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          padding: 12,
+          titleFont: { size: 14, weight: "bold" },
+          bodyFont: { size: 13 },
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderWidth: 1,
+          displayColors: true,
+          callbacks: {
+            label: function (context: any) {
+              const value = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(context.parsed.y);
+              return `${context.dataset.label}: ${value}`;
+            },
+          },
         },
       },
       scales: {
         y: {
           beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+            drawBorder: false,
+          },
           ticks: {
+            font: { size: 12 },
             callback: function (value) {
               return new Intl.NumberFormat("vi-VN").format(value as number);
             },
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+            drawBorder: false,
+          },
+          ticks: {
+            font: { size: 12 },
           },
         },
       },
@@ -361,77 +463,180 @@ watch(
 <style scoped>
 .dashboard {
   padding: 20px 0;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .metric-card {
-  transition: all 0.3s ease;
-  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 16px;
   overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 .metric-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, currentColor, transparent);
 }
 
 .metric-label {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 8px;
+  font-size: 12px;
+  color: #9e9e9e;
+  margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
+  letter-spacing: 0.8px;
+  font-weight: 700;
 }
 
 .metric-value {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 8px 0;
+  font-size: 28px;
+  font-weight: 800;
+  margin: 10px 0;
+  background: linear-gradient(135deg, #333 0%, #555 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .income-card {
-  border-left: 4px solid #4caf50;
   background: linear-gradient(
     135deg,
-    rgba(76, 175, 80, 0.1) 0%,
-    transparent 100%
+    rgba(76, 175, 80, 0.12) 0%,
+    rgba(76, 175, 80, 0.02) 100%
   );
+  border-left: 5px solid #4caf50;
+}
+
+.income-card .metric-value {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .expense-card {
-  border-left: 4px solid #f44336;
   background: linear-gradient(
     135deg,
-    rgba(244, 67, 54, 0.1) 0%,
-    transparent 100%
+    rgba(244, 67, 54, 0.12) 0%,
+    rgba(244, 67, 54, 0.02) 100%
   );
+  border-left: 5px solid #f44336;
+}
+
+.expense-card .metric-value {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .balance-card {
-  border-left: 4px solid #2196f3;
   background: linear-gradient(
     135deg,
-    rgba(33, 150, 243, 0.1) 0%,
-    transparent 100%
+    rgba(33, 150, 243, 0.12) 0%,
+    rgba(33, 150, 243, 0.02) 100%
   );
+  border-left: 5px solid #2196f3;
+}
+
+.balance-card .metric-value {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stats-card {
-  border-left: 4px solid #ff9800;
   background: linear-gradient(
     135deg,
-    rgba(255, 152, 0, 0.1) 0%,
-    transparent 100%
+    rgba(255, 152, 0, 0.12) 0%,
+    rgba(255, 152, 0, 0.02) 100%
   );
+  border-left: 5px solid #ff9800;
+}
+
+.stats-card .metric-value {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .chart-container {
   position: relative;
   height: 300px;
   margin: 20px 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
 }
 
 .text-muted {
-  color: #999;
+  color: #bdbdbd;
+  font-weight: 500;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 12px 0;
+  }
+
+  .metric-value {
+    font-size: 20px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+  }
+
+  .chart-container {
+    height: 250px;
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 8px 0;
+  }
+
+  .metric-card {
+    border-radius: 12px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
 }
 </style>
