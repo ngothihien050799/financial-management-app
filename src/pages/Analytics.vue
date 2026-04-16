@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useTransactionStore } from "@/stores/transactionStore";
 import type { FinancialMetrics } from "@/types";
 import Chart from "chart.js/auto";
@@ -168,7 +168,11 @@ const expenseAnalysisChart = ref<HTMLCanvasElement | null>(null);
 const incomeAnalysisChart = ref<HTMLCanvasElement | null>(null);
 const comparisonChart = ref<HTMLCanvasElement | null>(null);
 
-const chartInstances: Chart[] = [];
+const chartInstances = ref<{
+  expense?: Chart;
+  income?: Chart;
+  comparison?: Chart;
+}>({});
 
 const formatCurrency = (value: number) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -201,6 +205,18 @@ const getCategoryColor = (category: string): string => {
     Khác: "#9E9E9E",
   };
   return colors[category] || "#B0BEC5";
+};
+
+const destroyCharts = () => {
+  if (chartInstances.value.expense) {
+    chartInstances.value.expense.destroy();
+  }
+  if (chartInstances.value.income) {
+    chartInstances.value.income.destroy();
+  }
+  if (chartInstances.value.comparison) {
+    chartInstances.value.comparison.destroy();
+  }
 };
 
 const initializeExpenseAnalysis = () => {
@@ -248,7 +264,7 @@ const initializeExpenseAnalysis = () => {
     },
   });
 
-  chartInstances.push(chart);
+  chartInstances.value.expense = chart;
 };
 
 const initializeIncomeAnalysis = () => {
@@ -296,7 +312,7 @@ const initializeIncomeAnalysis = () => {
     },
   });
 
-  chartInstances.push(chart);
+  chartInstances.value.income = chart;
 };
 
 const initializeComparison = () => {
@@ -350,16 +366,28 @@ const initializeComparison = () => {
     },
   });
 
-  chartInstances.push(chart);
+  chartInstances.value.comparison = chart;
 };
 
-onMounted(() => {
+const initializeCharts = () => {
+  destroyCharts();
   setTimeout(() => {
     initializeExpenseAnalysis();
     initializeIncomeAnalysis();
     initializeComparison();
   }, 100);
+};
+
+onMounted(() => {
+  initializeCharts();
 });
+
+watch(
+  () => store.currentWalletId.value,
+  () => {
+    initializeCharts();
+  },
+);
 </script>
 
 <style scoped>

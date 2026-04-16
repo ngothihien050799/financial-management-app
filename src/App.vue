@@ -26,13 +26,41 @@
             >
               <v-icon left>mdi-wallet-outline</v-icon>
               <span class="font-weight-medium">{{
-                currentWallet?.name || "Chọn ví"
+                currentWalletId === "all"
+                  ? "Tất Cả Ví"
+                  : currentWallet?.name || "Chọn ví"
               }}</span>
               <v-icon right size="18">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
 
           <v-list class="wallet-menu">
+            <v-list-item
+              @click="store.setCurrentWallet('all')"
+              :class="{ 'wallet-active': currentWalletId === 'all' }"
+              class="wallet-item"
+            >
+              <template v-slot:prepend>
+                <span class="wallet-icon">📊</span>
+              </template>
+              <v-list-item-title class="font-weight-bold text-primary">
+                Tất Cả Ví
+              </v-list-item-title>
+              <template v-slot:append>
+                <v-chip
+                  v-if="currentWalletId === 'all'"
+                  color="primary"
+                  text-color="white"
+                  size="small"
+                  class="font-weight-bold"
+                >
+                  Tổng
+                </v-chip>
+              </template>
+            </v-list-item>
+
+            <v-divider class="my-2"></v-divider>
+
             <v-list-item
               v-for="wallet in wallets"
               :key="wallet.id"

@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useTransactionStore } from "@/stores/transactionStore";
 import type { FinancialMetrics } from "@/types";
 import Chart from "chart.js/auto";
@@ -172,6 +172,12 @@ const metrics = computed<FinancialMetrics>(() => store.getMetrics());
 const expensePieChart = ref<HTMLCanvasElement | null>(null);
 const incomePieChart = ref<HTMLCanvasElement | null>(null);
 const monthlyChart = ref<HTMLCanvasElement | null>(null);
+
+const chartInstances = ref<{
+  expense?: Chart;
+  income?: Chart;
+  monthly?: Chart;
+}>({});
 
 const recentTransactions = computed(() => {
   return transactions.value.slice(0, 5).reverse();
@@ -196,15 +202,28 @@ const getBalancePercentage = () => {
   );
 };
 
+const destroyCharts = () => {
+  if (chartInstances.value.expense) {
+    chartInstances.value.expense.destroy();
+  }
+  if (chartInstances.value.income) {
+    chartInstances.value.income.destroy();
+  }
+  if (chartInstances.value.monthly) {
+    chartInstances.value.monthly.destroy();
+  }
+};
+
 const initializePieChart = (
   canvasRef: HTMLCanvasElement | null,
   data: any[],
   label: string,
   color: string,
+  chartType: "expense" | "income",
 ) => {
   if (!canvasRef) return;
 
-  new Chart(canvasRef, {
+  const chart = new Chart(canvasRef, {
     type: "doughnut",
     data: {
       labels: data.map(
@@ -238,6 +257,12 @@ const initializePieChart = (
       },
     },
   });
+
+  if (chartType === "expense") {
+    chartInstances.value.expense = chart;
+  } else {
+    chartInstances.value.income = chart;
+  }
 };
 
 const initializeLineChart = () => {
@@ -245,7 +270,7 @@ const initializeLineChart = () => {
 
   const monthlyData = metrics.value.monthlyTrend;
 
-  new Chart(monthlyChart.value, {
+  const chart = new Chart(monthlyChart.value, {
     type: "line",
     data: {
       labels: monthlyData.map((m) => m.month),
@@ -296,25 +321,41 @@ const initializeLineChart = () => {
       },
     },
   });
+
+  chartInstances.value.monthly = chart;
 };
 
-onMounted(() => {
+const initializeCharts = () => {
+  destroyCharts();
   setTimeout(() => {
     initializePieChart(
       expensePieChart.value,
       metrics.value.expenseByCategory,
       "Chi Tiêu",
       "red",
+      "expense",
     );
     initializePieChart(
       incomePieChart.value,
       metrics.value.incomeByCategory,
       "Thu Nhập",
       "green",
+      "income",
     );
     initializeLineChart();
   }, 100);
+};
+
+onMounted(() => {
+  initializeCharts();
 });
+
+watch(
+  () => store.currentWalletId.value,
+  () => {
+    initializeCharts();
+  },
+);
 </script>
 
 <style scoped>

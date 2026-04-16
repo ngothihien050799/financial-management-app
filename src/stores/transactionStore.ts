@@ -15,14 +15,14 @@ import {
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-const currentWalletId = ref<string>('')
+const currentWalletId = ref<string>('all')
 
 const state = reactive<{ wallets: Wallet[]; transactions: Transaction[] }>({
   wallets: [
     {
       id: 'default',
-      name: 'Quản lý Thu Chi',
-      description: 'Quản lý thu chi hàng ngày',
+      name: 'Ví Chính',
+      description: 'Ví chính',
       icon: '💰',
       balance: 0,
       createdAt: new Date(),
@@ -35,8 +35,8 @@ const state = reactive<{ wallets: Wallet[]; transactions: Transaction[] }>({
       walletId: 'default',
       type: 'income',
       category: 'Lương',
-      amount: 15000000,
-      description: 'Lương tháng 3',
+      amount: 10000000,
+      description: 'Lương tháng',
       date: new Date(2024, 2, 1).toISOString(),
       createdAt: new Date()
     },
@@ -45,46 +45,18 @@ const state = reactive<{ wallets: Wallet[]; transactions: Transaction[] }>({
       walletId: 'default',
       type: 'expense',
       category: 'Ăn uống',
-      amount: 2000000,
-      description: 'Ăn cơm hàng ngày',
+      amount: 1000000,
+      description: 'Ăn cơm',
       date: new Date(2024, 2, 5).toISOString(),
-      createdAt: new Date()
-    },
-    {
-      id: '3',
-      walletId: 'default',
-      type: 'expense',
-      category: 'Giao thông',
-      amount: 500000,
-      description: 'Xăng xe',
-      date: new Date(2024, 2, 6).toISOString(),
-      createdAt: new Date()
-    },
-    {
-      id: '4',
-      walletId: 'default',
-      type: 'income',
-      category: 'Phụ cấp',
-      amount: 2000000,
-      description: 'Thưởng hiệu suất',
-      date: new Date(2024, 2, 10).toISOString(),
-      createdAt: new Date()
-    },
-    {
-      id: '5',
-      walletId: 'default',
-      type: 'expense',
-      category: 'Sức khỏe',
-      amount: 800000,
-      description: 'Khám sức khỏe định kỳ',
-      date: new Date(2024, 2, 12).toISOString(),
       createdAt: new Date()
     }
   ]
 })
 
-// Initialize current wallet
-currentWalletId.value = state.wallets[0]?.id || 'default'
+// Initialize current wallet - defaults to showing all wallets
+if (!currentWalletId.value || currentWalletId.value !== 'all') {
+  currentWalletId.value = 'all'
+}
 
 
 // Wallet Methods
@@ -282,7 +254,9 @@ const getCurrentWallet = () => state.wallets.find(w => w.id === currentWalletId.
 const getTransactionsByWallet = (walletId: string) => 
   state.transactions.filter(t => t.walletId === walletId)
 
-const getTransactions = () => getTransactionsByWallet(currentWalletId.value)
+const getTransactions = () => currentWalletId.value === 'all' 
+  ? state.transactions 
+  : getTransactionsByWallet(currentWalletId.value)
 
 const loadWallets = async () => {
   isLoading.value = true
@@ -358,8 +332,10 @@ const groupedTransactions = (transactions: Transaction[]): Record<string, Transa
   )
 }
 
-const calculateCategoryStats = (type: 'income' | 'expense', walletId: string): CategoryStats[] => {
-  const filtered = state.transactions.filter(t => t.walletId === walletId && t.type === type)
+const calculateCategoryStats = (type: 'income' | 'expense', walletId?: string): CategoryStats[] => {
+  const filtered = walletId 
+    ? state.transactions.filter(t => t.walletId === walletId && t.type === type)
+    : state.transactions.filter(t => t.type === type)
   const grouped = groupedTransactions(filtered)
 
   const total = filtered.reduce((sum, t) => sum + t.amount, 0)
@@ -375,10 +351,13 @@ const calculateCategoryStats = (type: 'income' | 'expense', walletId: string): C
   })
 }
 
-const getMonthlyTrend = (walletId: string): MonthlyData[] => {
+const getMonthlyTrend = (walletId?: string): MonthlyData[] => {
   const monthlyData: Record<string, { income: number; expense: number }> = {}
 
-  const walletTransactions = state.transactions.filter(t => t.walletId === walletId)
+  const walletTransactions = walletId 
+    ? state.transactions.filter(t => t.walletId === walletId)
+    : state.transactions
+    
   walletTransactions.forEach(t => {
     const date = new Date(t.date)
     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
@@ -404,7 +383,11 @@ const getMonthlyTrend = (walletId: string): MonthlyData[] => {
 }
 
 const getMetrics = (): FinancialMetrics => {
-  const walletTransactions = getTransactions()
+  // If currentWalletId is empty string, show all wallets
+  const useAllWallets = !currentWalletId.value || currentWalletId.value === 'all'
+  const walletTransactions = useAllWallets 
+    ? state.transactions 
+    : getTransactions()
 
   const totalIncome = walletTransactions
     .filter(t => t.type === 'income')
@@ -418,9 +401,9 @@ const getMetrics = (): FinancialMetrics => {
     totalIncome,
     totalExpense,
     balance: totalIncome - totalExpense,
-    incomeByCategory: calculateCategoryStats('income', currentWalletId.value),
-    expenseByCategory: calculateCategoryStats('expense', currentWalletId.value),
-    monthlyTrend: getMonthlyTrend(currentWalletId.value)
+    incomeByCategory: calculateCategoryStats('income', useAllWallets ? undefined : currentWalletId.value),
+    expenseByCategory: calculateCategoryStats('expense', useAllWallets ? undefined : currentWalletId.value),
+    monthlyTrend: getMonthlyTrend(useAllWallets ? undefined : currentWalletId.value)
   }
 }
 
