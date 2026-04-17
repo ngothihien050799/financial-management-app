@@ -1,8 +1,8 @@
-# Financial Dashboard - Mobile App Installation & Deployment Guide
+# Quản Lý Chi Tiêu - Mobile App Installation & Deployment Guide
 
 ## 🚀 Overview
 
-Your Financial Dashboard is now fully optimized as a Progressive Web App (PWA) that works on all devices including smartphones and tablets.
+Your Quản Lý Chi Tiêu is now fully optimized as a Progressive Web App (PWA) that works on all devices including smartphones and tablets.
 
 ## 📱 Installation Methods
 

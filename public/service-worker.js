@@ -118,7 +118,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('Financial Dashboard', options)
+    self.registration.showNotification('Quản Lý Chi Tiêu', options)
   );
 });
 

@@ -221,7 +221,7 @@ const initializePieChart = (
   color: string,
   chartType: "expense" | "income",
 ) => {
-  if (!canvasRef) return;
+  if (!canvasRef || !data || data.length === 0) return;
 
   const colors = [
     "#FF6B6B",
@@ -306,6 +306,9 @@ const initializeLineChart = () => {
   if (!monthlyChart.value) return;
 
   const monthlyData = metrics.value.monthlyTrend;
+
+  // Only initialize if there's data
+  if (!monthlyData || monthlyData.length === 0) return;
 
   const chart = new Chart(monthlyChart.value, {
     type: "line",
@@ -429,6 +432,7 @@ const initializeLineChart = () => {
 
 const initializeCharts = () => {
   destroyCharts();
+  // Give the DOM time to update before re-initializing charts
   setTimeout(() => {
     initializePieChart(
       expensePieChart.value,
@@ -445,7 +449,7 @@ const initializeCharts = () => {
       "income",
     );
     initializeLineChart();
-  }, 100);
+  }, 200);
 };
 
 onMounted(() => {
@@ -457,6 +461,7 @@ watch(
   () => {
     initializeCharts();
   },
+  { flush: "post" },
 );
 </script>
 

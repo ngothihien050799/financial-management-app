@@ -1,449 +1,479 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Dashboard - Download & Install</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản Lý Chi Tiêu - Download & Install</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            color: white;
-            padding: 40px 20px;
-            margin-bottom: 40px;
-        }
-        
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        text-align: center;
+        color: white;
+        padding: 40px 20px;
+        margin-bottom: 40px;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+      }
+
+      .card h2 {
+        color: #1f3a93;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .card-icon {
+        font-size: 1.8rem;
+      }
+
+      .card p {
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      .steps {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        color: #555;
+        font-size: 0.95rem;
+      }
+
+      .steps ol {
+        margin-left: 20px;
+      }
+
+      .steps li {
+        margin-bottom: 8px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(31, 58, 147, 0.3);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        margin-top: 8px;
+      }
+
+      .btn-secondary:hover {
+        box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+      }
+
+      .features {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .features h2 {
+        color: #1f3a93;
+        margin-bottom: 20px;
+      }
+
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .feature-item {
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        border-left: 4px solid #1f3a93;
+        display: flex;
+        gap: 12px;
+      }
+
+      .feature-item-icon {
+        font-size: 1.5rem;
+        min-width: 30px;
+      }
+
+      .feature-item h3 {
+        color: #1f3a93;
+        font-size: 1rem;
+        margin-bottom: 5px;
+      }
+
+      .feature-item p {
+        color: #666;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      .faq {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .faq h2 {
+        color: #1f3a93;
+        margin-bottom: 20px;
+      }
+
+      .faq-item {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+      }
+
+      .faq-item:last-child {
+        border-bottom: none;
+      }
+
+      .faq-question {
+        color: #1f3a93;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .faq-answer {
+        color: #666;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .faq-answer.active {
+        display: block;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #4caf50;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-right: 8px;
+        margin-bottom: 8px;
+      }
+
+      footer {
+        background: rgba(0, 0, 0, 0.1);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 768px) {
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+          font-size: 1.8rem;
         }
-        
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
+
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+          grid-template-columns: 1fr;
         }
-        
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-        }
-        
-        .card h2 {
-            color: #1f3a93;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card-icon {
-            font-size: 1.8rem;
-        }
-        
-        .card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .steps {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            color: #555;
-            font-size: 0.95rem;
-        }
-        
-        .steps ol {
-            margin-left: 20px;
-        }
-        
-        .steps li {
-            margin-bottom: 8px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            width: 100%;
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(31, 58, 147, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            margin-top: 8px;
-        }
-        
-        .btn-secondary:hover {
-            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
-        }
-        
-        .features {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .features h2 {
-            color: #1f3a93;
-            margin-bottom: 20px;
-        }
-        
-        .feature-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .feature-item {
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border-left: 4px solid #1f3a93;
-            display: flex;
-            gap: 12px;
-        }
-        
-        .feature-item-icon {
-            font-size: 1.5rem;
-            min-width: 30px;
-        }
-        
-        .feature-item h3 {
-            color: #1f3a93;
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        
-        .feature-item p {
-            color: #666;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-        
-        .faq {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .faq h2 {
-            color: #1f3a93;
-            margin-bottom: 20px;
-        }
-        
-        .faq-item {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-        }
-        
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-        
-        .faq-question {
-            color: #1f3a93;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .faq-answer {
-            color: #666;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .faq-answer.active {
-            display: block;
-        }
-        
-        .badge {
-            display: inline-block;
-            background: #4caf50;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-right: 8px;
-            margin-bottom: 8px;
-        }
-        
-        footer {
-            background: rgba(0, 0, 0, 0.1);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 40px;
-        }
-        
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>💰 Financial Dashboard</h1>
-            <p>Quản lý tài chính thông minh trên mọi thiết bị</p>
-        </header>
-        
-        <!-- Installation Methods -->
-        <div class="grid">
-            <!-- Android Installation -->
-            <div class="card">
-                <h2><span class="card-icon">📱</span> Android</h2>
-                <p>Cài đặt ứng dụng trên điện thoại Android của bạn</p>
-                
-                <div class="steps">
-                    <strong>Cách cài đặt:</strong>
-                    <ol>
-                        <li>Mở Chrome trên điện thoại của bạn</li>
-                        <li>Truy cập địa chỉ ứng dụng</li>
-                        <li>Tap menu (3 chấm) → "Cài đặt ứng dụng"</li>
-                        <li>Ứng dụng sẽ xuất hiện trên màn hình chính</li>
-                    </ol>
-                </div>
-                
-                <span class="badge">✓ Hoạt động Offline</span>
-                <span class="badge">✓ Nhanh</span>
-                <span class="badge">✓ Miễn phí</span>
-                
-                <a href="#" class="btn">Mở trên Android</a>
-                <a href="https://web.dev/app-shortcuts/" target="_blank" class="btn btn-secondary">Hướng dẫn chi tiết</a>
-            </div>
-            
-            <!-- iPhone Installation -->
-            <div class="card">
-                <h2><span class="card-icon">🍎</span> iPhone/iPad</h2>
-                <p>Cài đặt ứng dụng trên thiết bị Apple của bạn</p>
-                
-                <div class="steps">
-                    <strong>Cách cài đặt:</strong>
-                    <ol>
-                        <li>Mở Safari trên thiết bị của bạn</li>
-                        <li>Truy cập địa chỉ ứng dụng</li>
-                        <li>Tap nút Chia sẻ (mũi tên)</li>
-                        <li>Tap "Thêm vào Màn hình chính"</li>
-                        <li>Tap "Thêm" ở góc trên cùng</li>
-                    </ol>
-                </div>
-                
-                <span class="badge">✓ Hoạt động Offline</span>
-                <span class="badge">✓ Nhanh</span>
-                <span class="badge">✓ Miễn phí</span>
-                
-                <a href="#" class="btn">Mở trên iPhone</a>
-                <a href="https://www.howtogeek.com/196087/" target="_blank" class="btn btn-secondary">Hướng dẫn chi tiết</a>
-            </div>
-            
-            <!-- Web Browser -->
-            <div class="card">
-                <h2><span class="card-icon">🌐</span> Web Browser</h2>
-                <p>Sử dụng ứng dụng trực tiếp trong trình duyệt</p>
-                
-                <div class="steps">
-                    <strong>Lợi ích:</strong>
-                    <ol>
-                        <li>Không cần cài đặt</li>
-                        <li>Tương thích mọi thiết bị</li>
-                        <li>Cập nhật tự động</li>
-                        <li>Hoạt động Offline</li>
-                    </ol>
-                </div>
-                
-                <span class="badge">✓ Tất cả trình duyệt</span>
-                <span class="badge">✓ Đối xứng</span>
-                <span class="badge">✓ Cập nhật tự động</span>
-                
-                <a href="#" class="btn">Mở ứng dụng</a>
-                <a href="#" class="btn btn-secondary">Mở ở tab mới</a>
-            </div>
+      <header>
+        <h1>💰 Quản Lý Chi Tiêu</h1>
+        <p>Quản lý tài chính thông minh trên mọi thiết bị</p>
+      </header>
+
+      <!-- Installation Methods -->
+      <div class="grid">
+        <!-- Android Installation -->
+        <div class="card">
+          <h2><span class="card-icon">📱</span> Android</h2>
+          <p>Cài đặt ứng dụng trên điện thoại Android của bạn</p>
+
+          <div class="steps">
+            <strong>Cách cài đặt:</strong>
+            <ol>
+              <li>Mở Chrome trên điện thoại của bạn</li>
+              <li>Truy cập địa chỉ ứng dụng</li>
+              <li>Tap menu (3 chấm) → "Cài đặt ứng dụng"</li>
+              <li>Ứng dụng sẽ xuất hiện trên màn hình chính</li>
+            </ol>
+          </div>
+
+          <span class="badge">✓ Hoạt động Offline</span>
+          <span class="badge">✓ Nhanh</span>
+          <span class="badge">✓ Miễn phí</span>
+
+          <a href="#" class="btn">Mở trên Android</a>
+          <a
+            href="https://web.dev/app-shortcuts/"
+            target="_blank"
+            class="btn btn-secondary"
+            >Hướng dẫn chi tiết</a
+          >
         </div>
-        
-        <!-- Features -->
-        <div class="features">
-            <h2>✨ Tính năng nổi bật</h2>
-            <div class="feature-list">
-                <div class="feature-item">
-                    <div class="feature-item-icon">📊</div>
-                    <div>
-                        <h3>Biểu đồ đẹp</h3>
-                        <p>Trực quan hóa dữ liệu tài chính của bạn với biểu đồ tương tác</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-item-icon">💾</div>
-                    <div>
-                        <h3>Hoạt động Offline</h3>
-                        <p>Tiếp tục làm việc ngay cả khi không có kết nối Internet</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-item-icon">⚡</div>
-                    <div>
-                        <h3>Siêu nhanh</h3>
-                        <p>Tải trong vài giây, phản ứng tức thời với mỗi hành động</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-item-icon">📱</div>
-                    <div>
-                        <h3>Responsive</h3>
-                        <p>Hoàn hảo trên điện thoại, máy tính bảng và máy tính</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-item-icon">🔒</div>
-                    <div>
-                        <h3>Bảo mật</h3>
-                        <p>Dữ liệu của bạn được lưu trữ cục bộ, không được gửi lên máy chủ</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-item-icon">📈</div>
-                    <div>
-                        <h3>Phân tích</h3>
-                        <p>Theo dõi chi tiêu, thu nhập, và phân tích tài chính chi tiết</p>
-                    </div>
-                </div>
-            </div>
+
+        <!-- iPhone Installation -->
+        <div class="card">
+          <h2><span class="card-icon">🍎</span> iPhone/iPad</h2>
+          <p>Cài đặt ứng dụng trên thiết bị Apple của bạn</p>
+
+          <div class="steps">
+            <strong>Cách cài đặt:</strong>
+            <ol>
+              <li>Mở Safari trên thiết bị của bạn</li>
+              <li>Truy cập địa chỉ ứng dụng</li>
+              <li>Tap nút Chia sẻ (mũi tên)</li>
+              <li>Tap "Thêm vào Màn hình chính"</li>
+              <li>Tap "Thêm" ở góc trên cùng</li>
+            </ol>
+          </div>
+
+          <span class="badge">✓ Hoạt động Offline</span>
+          <span class="badge">✓ Nhanh</span>
+          <span class="badge">✓ Miễn phí</span>
+
+          <a href="#" class="btn">Mở trên iPhone</a>
+          <a
+            href="https://www.howtogeek.com/196087/"
+            target="_blank"
+            class="btn btn-secondary"
+            >Hướng dẫn chi tiết</a
+          >
         </div>
-        
-        <!-- FAQ -->
-        <div class="faq">
-            <h2>❓ Câu hỏi thường gặp</h2>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Ứng dụng có hoạt động khi không có Internet không?</span>
-                    <span>▼</span>
-                </div>
-                <div class="faq-answer">
-                    Có! Ứng dụng là một Progressive Web App (PWA) được thiết kế để hoạt động hoàn toàn khi ngoại tuyến. Khi bạn truy cập lần đầu tiên, tất cả các tài nguyên sẽ được lưu vào bộ nhớ cache. Bạn có thể tiếp tục quản lý tài chính của mình ngay cả khi không có kết nối Internet.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Dữ liệu của tôi được lưu trữ ở đâu?</span>
-                    <span>▼</span>
-                </div>
-                <div class="faq-answer">
-                    Tất cả dữ liệu của bạn được lưu trữ cục bộ trên thiết bị của bạn sử dụng localStorage của trình duyệt. Không có dữ liệu nào được gửi đến máy chủ. Đây là cách tốt nhất để bảo vệ quyền riêng tư của bạn.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Tôi có thể cài đặt trên nhiều thiết bị không?</span>
-                    <span>▼</span>
-                </div>
-                <div class="faq-answer">
-                    Có, bạn có thể cài đặt ứng dụng trên bao nhiêu thiết bị tùy thích. Mỗi thiết bị sẽ có dữ liệu riêng biệt được lưu trữ cục bộ. Nếu bạn muốn đồng bộ dữ liệu giữa các thiết bị, hãy cân nhắc sử dụng tính năng sao lưu.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Làm thế nào để cập nhật ứng dụng?</span>
-                    <span>▼</span>
-                </div>
-                <div class="faq-answer">
-                    Cập nhật diễn ra tự động. Khi bạn mở ứng dụng, nó sẽ tự động kiểm tra các bản cập nhật mới. Bạn sẽ được thông báo nếu có phiên bản mới và có thể làm mới trang để cài đặt.
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Tôi bị mất dữ liệu nếu xóa bộ nhớ cache không?</span>
-                    <span>▼</span>
-                </div>
-                <div class="faq-answer">
-                    Có, nếu bạn xóa bộ nhớ cache trình duyệt, tất cả dữ liệu sẽ bị xóa. Để tránh điều này, hãy xuất dữ liệu của bạn định kỳ hoặc không xóa bộ nhớ cache của ứng dụng cụ thể.
-                </div>
-            </div>
+
+        <!-- Web Browser -->
+        <div class="card">
+          <h2><span class="card-icon">🌐</span> Web Browser</h2>
+          <p>Sử dụng ứng dụng trực tiếp trong trình duyệt</p>
+
+          <div class="steps">
+            <strong>Lợi ích:</strong>
+            <ol>
+              <li>Không cần cài đặt</li>
+              <li>Tương thích mọi thiết bị</li>
+              <li>Cập nhật tự động</li>
+              <li>Hoạt động Offline</li>
+            </ol>
+          </div>
+
+          <span class="badge">✓ Tất cả trình duyệt</span>
+          <span class="badge">✓ Đối xứng</span>
+          <span class="badge">✓ Cập nhật tự động</span>
+
+          <a href="#" class="btn">Mở ứng dụng</a>
+          <a href="#" class="btn btn-secondary">Mở ở tab mới</a>
         </div>
-        
-        <footer>
-            <p>© 2024 Financial Dashboard - Quản lý tài chính thông minh</p>
-            <p>Được xây dựng với Vue 3, Vuetify, và Chart.js</p>
-        </footer>
+      </div>
+
+      <!-- Features -->
+      <div class="features">
+        <h2>✨ Tính năng nổi bật</h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-item-icon">📊</div>
+            <div>
+              <h3>Biểu đồ đẹp</h3>
+              <p>
+                Trực quan hóa dữ liệu tài chính của bạn với biểu đồ tương tác
+              </p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-item-icon">💾</div>
+            <div>
+              <h3>Hoạt động Offline</h3>
+              <p>Tiếp tục làm việc ngay cả khi không có kết nối Internet</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-item-icon">⚡</div>
+            <div>
+              <h3>Siêu nhanh</h3>
+              <p>Tải trong vài giây, phản ứng tức thời với mỗi hành động</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-item-icon">📱</div>
+            <div>
+              <h3>Responsive</h3>
+              <p>Hoàn hảo trên điện thoại, máy tính bảng và máy tính</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-item-icon">🔒</div>
+            <div>
+              <h3>Bảo mật</h3>
+              <p>
+                Dữ liệu của bạn được lưu trữ cục bộ, không được gửi lên máy chủ
+              </p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-item-icon">📈</div>
+            <div>
+              <h3>Phân tích</h3>
+              <p>
+                Theo dõi chi tiêu, thu nhập, và phân tích tài chính chi tiết
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq">
+        <h2>❓ Câu hỏi thường gặp</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Ứng dụng có hoạt động khi không có Internet không?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-answer">
+            Có! Ứng dụng là một Progressive Web App (PWA) được thiết kế để hoạt
+            động hoàn toàn khi ngoại tuyến. Khi bạn truy cập lần đầu tiên, tất
+            cả các tài nguyên sẽ được lưu vào bộ nhớ cache. Bạn có thể tiếp tục
+            quản lý tài chính của mình ngay cả khi không có kết nối Internet.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Dữ liệu của tôi được lưu trữ ở đâu?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-answer">
+            Tất cả dữ liệu của bạn được lưu trữ cục bộ trên thiết bị của bạn sử
+            dụng localStorage của trình duyệt. Không có dữ liệu nào được gửi đến
+            máy chủ. Đây là cách tốt nhất để bảo vệ quyền riêng tư của bạn.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Tôi có thể cài đặt trên nhiều thiết bị không?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-answer">
+            Có, bạn có thể cài đặt ứng dụng trên bao nhiêu thiết bị tùy thích.
+            Mỗi thiết bị sẽ có dữ liệu riêng biệt được lưu trữ cục bộ. Nếu bạn
+            muốn đồng bộ dữ liệu giữa các thiết bị, hãy cân nhắc sử dụng tính
+            năng sao lưu.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Làm thế nào để cập nhật ứng dụng?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-answer">
+            Cập nhật diễn ra tự động. Khi bạn mở ứng dụng, nó sẽ tự động kiểm
+            tra các bản cập nhật mới. Bạn sẽ được thông báo nếu có phiên bản mới
+            và có thể làm mới trang để cài đặt.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Tôi bị mất dữ liệu nếu xóa bộ nhớ cache không?</span>
+            <span>▼</span>
+          </div>
+          <div class="faq-answer">
+            Có, nếu bạn xóa bộ nhớ cache trình duyệt, tất cả dữ liệu sẽ bị xóa.
+            Để tránh điều này, hãy xuất dữ liệu của bạn định kỳ hoặc không xóa
+            bộ nhớ cache của ứng dụng cụ thể.
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>© 2024 Quản Lý Chi Tiêu - Quản lý tài chính thông minh</p>
+        <p>Được xây dựng với Vue 3, Vuetify, và Chart.js</p>
+      </footer>
     </div>
-    
+
     <script>
-        function toggleFaq(element) {
-            const answer = element.parentElement.querySelector('.faq-answer');
-            answer.classList.toggle('active');
-        }
+      function toggleFaq(element) {
+        const answer = element.parentElement.querySelector(".faq-answer");
+        answer.classList.toggle("active");
+      }
     </script>
-</body>
+  </body>
 </html>

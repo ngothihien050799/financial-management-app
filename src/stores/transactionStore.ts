@@ -18,45 +18,6 @@ const error = ref<string | null>(null)
 const currentWalletId = ref<string>('all')
 
 const state = reactive<{ wallets: Wallet[]; transactions: Transaction[] }>({
-  wallets: [
-    {
-      id: 'default',
-      name: 'Ví Chính',
-      description: 'Ví chính',
-      icon: '💰',
-      balance: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ],
-  transactions: [
-    {
-      id: '1',
-      walletId: 'default',
-      type: 'income',
-      category: 'Lương',
-      amount: 10000000,
-      description: 'Lương tháng',
-      date: new Date(2024, 2, 1).toISOString(),
-      createdAt: new Date()
-    },
-    {
-      id: '2',
-      walletId: 'default',
-      type: 'expense',
-      category: 'Ăn uống',
-      amount: 1000000,
-      description: 'Ăn cơm',
-      date: new Date(2024, 2, 5).toISOString(),
-      createdAt: new Date()
-    }
-  ]
-})
-
-// Initialize current wallet - defaults to showing all wallets
-if (!currentWalletId.value || currentWalletId.value !== 'all') {
-  currentWalletId.value = 'all'
-}
 
 
 // Wallet Methods

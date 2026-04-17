@@ -7,37 +7,46 @@
       style="
         background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
         padding-top: max(0px, env(safe-area-inset-top));
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
       "
     >
-      <div class="d-flex align-center w-100">
+      <div class="d-flex align-center w-100 app-bar-content">
         <div class="app-title">
-          <v-icon size="28" class="mr-2">mdi-chart-line-variant</v-icon>
-          <span class="font-weight-bold">Financial Dashboard</span>
+          <v-icon size="24" class="mr-2 title-icon"
+            >mdi-chart-line-variant</v-icon
+          >
+          <span class="font-weight-bold app-title-text">Quản Lý Chi Tiêu</span>
         </div>
 
         <v-spacer></v-spacer>
 
         <!-- Wallet Selector - Premium -->
-        <v-menu offset-y>
+        <v-menu offset-y location="bottom end" :close-on-content-click="true">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
               variant="outlined"
               color="white"
-              class="mr-4 wallet-btn"
-              rounded
+              class="wallet-btn"
+              rounded="lg"
+              size="small"
+              density="compact"
             >
-              <v-icon left>mdi-wallet-outline</v-icon>
-              <span class="font-weight-medium">{{
+              <v-icon size="18">mdi-wallet-outline</v-icon>
+              <span class="font-weight-medium wallet-text">{{
                 currentWalletId === "all"
-                  ? "Tất Cả Ví"
-                  : currentWallet?.name || "Chọn ví"
+                  ? "Ví"
+                  : (currentWallet?.name || "Chọn")?.substring(0, 10)
               }}</span>
-              <v-icon right size="18">mdi-chevron-down</v-icon>
+              <v-icon size="14">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
 
-          <v-list class="wallet-menu">
+          <v-list
+            class="wallet-menu"
+            style="max-width: 280px; max-height: 70vh"
+          >
             <v-list-item
               @click="store.setCurrentWallet('all')"
               :class="{ 'wallet-active': currentWalletId === 'all' }"
@@ -359,6 +368,11 @@ onMounted(async () => {
 
 <style scoped>
 /* Modern App Design */
+.app-bar-content {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .app-title {
   display: flex;
   align-items: center;
@@ -366,11 +380,36 @@ onMounted(async () => {
   color: white;
   font-weight: 600;
   letter-spacing: 0.5px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.title-icon {
+  flex-shrink: 0;
+}
+
+.app-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 
 .wallet-btn {
   border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  gap: 4px !important;
+}
+
+.wallet-text {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .wallet-text {
+    display: inline;
+  }
 }
 
 .wallet-btn:hover {

@@ -1,4 +1,4 @@
-# 🎉 Financial Dashboard - Project Completion Summary
+# 🎉 Quản Lý Chi Tiêu - Project Completion Summary
 
 ## ✅ Improvements Completed
 
@@ -376,7 +376,7 @@ npm install terser --save-dev
 
 ## 🎉 Summary
 
-Your Financial Dashboard is now:
+Your Quản Lý Chi Tiêu is now:
 
 - ✅ Beautiful with premium charts
 - ✅ Fast with performance optimizations

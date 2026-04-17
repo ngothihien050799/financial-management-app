@@ -1,4 +1,4 @@
-# 🎉 HOÀN THÀNH - Financial Dashboard App
+# 🎉 HOÀN THÀNH - Quản Lý Chi Tiêu App
 
 ## ✨ Những Cải Tiến Đã Thực Hiện
 

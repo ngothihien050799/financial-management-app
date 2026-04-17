@@ -1,4 +1,4 @@
-# Financial Dashboard - Advanced Mobile Build Guide
+# Quản Lý Chi Tiêu - Advanced Mobile Build Guide
 
 ## 🔧 Building Native APK for Android
 
@@ -28,7 +28,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.financialapp.dashboard',
-  appName: 'Financial Dashboard',
+  appName: 'Quản Lý Chi Tiêu',
   webDir: 'dist',
   bundledWebRuntime: false,
   plugins: {
@@ -70,7 +70,7 @@ In Android Studio:
 npm install -g cordova
 
 # Create Cordova project
-cordova create financial-app com.financialapp.dashboard "Financial Dashboard"
+cordova create financial-app com.financialapp.dashboard "Quản Lý Chi Tiêu"
 
 # Add Android platform
 cd financial-app
