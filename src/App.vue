@@ -5,7 +5,7 @@
       app
       elevation="4"
       style="
-        background: linear-gradient(135deg, #620515 0%, #8b1538 100%);
+        background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
         padding-top: max(0px, env(safe-area-inset-top));
         padding-left: max(0px, env(safe-area-inset-left));
         padding-right: max(0px, env(safe-area-inset-right));
@@ -469,24 +469,24 @@ onMounted(async () => {
 .total-wallet-item:hover {
   background: linear-gradient(
     135deg,
-    rgba(98, 5, 21, 0.25) 0%,
-    rgba(194, 59, 93, 0.15) 100%
+    rgba(31, 58, 147, 0.25) 0%,
+    rgba(46, 80, 144, 0.15) 100%
   );
-  border-left-color: #C23B5D;
+  border-left-color: #2e5090;
 }
 
 .wallet-active {
-  background-color: rgba(98, 5, 21, 0.15) !important;
-  border-left: 4px solid #620515;
+  background-color: rgba(31, 58, 147, 0.15) !important;
+  border-left: 4px solid #1f3a93;
 }
 
 .wallet-active.total-wallet-item {
   background: linear-gradient(
     135deg,
-    rgba(98, 5, 21, 0.25) 0%,
-    rgba(194, 59, 93, 0.15) 100%
+    rgba(31, 58, 147, 0.25) 0%,
+    rgba(46, 80, 144, 0.15) 100%
   );
-  border-left-color: #C23B5D;
+  border-left-color: #2e5090;
 }
 
 .wallet-avatar {
@@ -516,7 +516,7 @@ onMounted(async () => {
 .drawer-header {
   padding: 20px 24px;
   padding-top: max(20px, env(safe-area-inset-top));
-  background: linear-gradient(135deg, #620515 0%, #8B1538 100%);
+  background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
   color: white;
   border-radius: 0 0 16px 0;
 }
@@ -544,7 +544,7 @@ onMounted(async () => {
 }
 
 .gradient-title {
-  background: linear-gradient(135deg, #620515 0%, #C23B5D 100%);
+  background: linear-gradient(135deg, #1f3a93 0%, #06d6a0 100%);
   color: white;
   font-weight: 600;
 }
