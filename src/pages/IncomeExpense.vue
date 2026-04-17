@@ -5,32 +5,37 @@
         <v-card elevation="2">
           <v-card-title>Quản Lý Thu Chi</v-card-title>
           <v-card-text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-btn
-                  class="income-btn mb-4"
-                  block
-                  size="large"
-                  elevation="2"
-                  @click="openAddDialog('income')"
-                >
-                  <v-icon left>mdi-plus-circle</v-icon>
-                  Thêm Thu Nhập
-                </v-btn>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-btn
-                  class="expense-btn mb-4"
-                  block
-                  size="large"
-                  elevation="2"
-                  @click="openAddDialog('expense')"
-                >
-                  <v-icon left>mdi-minus-circle</v-icon>
-                  Thêm Chi Tiêu
-                </v-btn>
-              </v-col>
-            </v-row>
+            <v-alert
+              v-if="store.currentWalletId.value === 'all'"
+              type="warning"
+              class="mb-4"
+            >
+              <v-icon left>mdi-information-outline</v-icon>
+              Vui lòng chọn một ví cụ thể để thêm giao dịch
+            </v-alert>
+
+            <div class="d-flex gap-2 mb-4 mt-5">
+              <v-btn
+                class="income-btn flex-grow-1"
+                size="large"
+                elevation="2"
+                :disabled="store.currentWalletId.value === 'all'"
+                @click="openAddDialog('income')"
+              >
+                <v-icon left>mdi-plus-circle</v-icon>
+                Thêm Thu Nhập
+              </v-btn>
+              <v-btn
+                class="expense-btn flex-grow-1"
+                size="large"
+                elevation="2"
+                :disabled="store.currentWalletId.value === 'all'"
+                @click="openAddDialog('expense')"
+              >
+                <v-icon left>mdi-minus-circle</v-icon>
+                Thêm Chi Tiêu
+              </v-btn>
+            </div>
 
             <v-row class="mb-4">
               <v-col cols="12" md="4">
@@ -368,9 +373,15 @@ const saveTransaction = async () => {
         date: new Date(formData.value.date).toISOString(),
       });
     } else {
+      // Use first wallet if 'all' is selected
+      const walletId =
+        store.currentWalletId.value === "all"
+          ? store.getWallets()[0]?.id || "default"
+          : store.currentWalletId.value;
+
       await store.addTransaction({
         ...formData.value,
-        walletId: store.currentWalletId.value,
+        walletId: walletId,
         date: new Date(formData.value.date).toISOString(),
       });
     }

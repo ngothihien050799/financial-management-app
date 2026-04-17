@@ -18,7 +18,24 @@ const error = ref<string | null>(null)
 const currentWalletId = ref<string>('all')
 
 const state = reactive<{ wallets: Wallet[]; transactions: Transaction[] }>({
+  wallets: [
+    {
+      id: 'default',
+      name: 'Ví Chính',
+      description: 'Ví chính',
+      icon: '💰',
+      balance: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ],
+  transactions: []
+})
 
+// Initialize current wallet - defaults to showing all wallets
+if (!currentWalletId.value || currentWalletId.value !== 'all') {
+  currentWalletId.value = 'all'
+}
 
 // Wallet Methods
 const addWallet = async (wallet: Omit<Wallet, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -108,6 +125,12 @@ const updateWallet = async (walletId: string, updates: Partial<Wallet>) => {
 }
 
 const setCurrentWallet = (walletId: string) => {
+  // Allow 'all' as a special value for showing all wallets
+  if (walletId === 'all') {
+    currentWalletId.value = 'all'
+    return
+  }
+  
   const wallet = state.wallets.find(w => w.id === walletId)
   if (wallet) {
     currentWalletId.value = walletId

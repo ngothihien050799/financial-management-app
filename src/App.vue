@@ -5,7 +5,7 @@
       app
       elevation="4"
       style="
-        background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+        background: linear-gradient(135deg, #620515 0%, #8b1538 100%);
         padding-top: max(0px, env(safe-area-inset-top));
         padding-left: max(0px, env(safe-area-inset-left));
         padding-right: max(0px, env(safe-area-inset-right));
@@ -22,42 +22,51 @@
         <v-spacer></v-spacer>
 
         <!-- Wallet Selector - Premium -->
-        <v-menu offset-y location="bottom end" :close-on-content-click="true">
+        <v-menu offset-y location="bottom" :close-on-content-click="true">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              variant="outlined"
-              color="white"
+              variant="elevated"
+              color="rgba(255, 255, 255, 0.2)"
               class="wallet-btn"
               rounded="lg"
-              size="small"
-              density="compact"
+              size="default"
+              density="default"
+              height="44"
             >
-              <v-icon size="18">mdi-wallet-outline</v-icon>
+              <v-icon size="20" class="mr-2">mdi-wallet-outline</v-icon>
               <span class="font-weight-medium wallet-text">{{
                 currentWalletId === "all"
-                  ? "Ví"
-                  : (currentWallet?.name || "Chọn")?.substring(0, 10)
+                  ? "Tất Cả Ví"
+                  : currentWallet?.name || "Chọn Ví"
               }}</span>
-              <v-icon size="14">mdi-chevron-down</v-icon>
+              <v-icon size="16" class="ml-2">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
 
           <v-list
             class="wallet-menu"
-            style="max-width: 280px; max-height: 70vh"
+            style="max-width: 340px; max-height: 75vh"
           >
+            <!-- "Tất Cả Ví" - Prominent Total Button -->
             <v-list-item
               @click="store.setCurrentWallet('all')"
               :class="{ 'wallet-active': currentWalletId === 'all' }"
-              class="wallet-item"
+              class="wallet-item total-wallet-item"
             >
               <template v-slot:prepend>
-                <span class="wallet-icon">📊</span>
+                <v-avatar color="primary" text-color="white" size="40">
+                  <span style="font-size: 20px">📊</span>
+                </v-avatar>
               </template>
-              <v-list-item-title class="font-weight-bold text-primary">
-                Tất Cả Ví
-              </v-list-item-title>
+              <div>
+                <v-list-item-title class="font-weight-bold text-primary">
+                  Tất Cả Ví
+                </v-list-item-title>
+                <v-list-item-subtitle class="text-xs">
+                  Tổng tất cả ví
+                </v-list-item-subtitle>
+              </div>
               <template v-slot:append>
                 <v-chip
                   v-if="currentWalletId === 'all'"
@@ -66,13 +75,14 @@
                   size="small"
                   class="font-weight-bold"
                 >
-                  Tổng
+                  ✓ Chọn
                 </v-chip>
               </template>
             </v-list-item>
 
-            <v-divider class="my-2"></v-divider>
+            <v-divider class="my-3"></v-divider>
 
+            <!-- Individual Wallets -->
             <v-list-item
               v-for="wallet in wallets"
               :key="wallet.id"
@@ -81,11 +91,24 @@
               class="wallet-item"
             >
               <template v-slot:prepend>
-                <span class="wallet-icon">{{ wallet.icon }}</span>
+                <v-avatar
+                  :color="
+                    currentWalletId === wallet.id ? 'primary' : 'grey-lighten-2'
+                  "
+                  size="40"
+                  class="wallet-avatar"
+                >
+                  <span style="font-size: 18px">{{ wallet.icon }}</span>
+                </v-avatar>
               </template>
-              <v-list-item-title class="font-weight-medium">
-                {{ wallet.name }}
-              </v-list-item-title>
+              <div style="flex: 1; min-width: 0">
+                <v-list-item-title class="font-weight-medium">
+                  {{ wallet.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="text-xs">
+                  {{ wallet.description || "Không có mô tả" }}
+                </v-list-item-subtitle>
+              </div>
               <template v-slot:append>
                 <div class="d-flex align-center gap-2">
                   <v-chip
@@ -104,24 +127,27 @@
                     size="x-small"
                     color="error"
                     @click.stop="deleteWallet(wallet.id)"
-                    class="ml-2"
+                    class="ml-1"
                   >
-                    <v-icon size="18">mdi-trash-can-outline</v-icon>
+                    <v-icon size="16">mdi-trash-can-outline</v-icon>
                   </v-btn>
                 </div>
               </template>
             </v-list-item>
 
-            <v-divider class="my-2"></v-divider>
+            <v-divider class="my-3"></v-divider>
 
+            <!-- Add New Wallet -->
             <v-list-item
               @click="showAddWalletDialog = true"
               class="add-wallet-btn"
             >
               <template v-slot:prepend>
-                <v-icon color="secondary">mdi-plus-circle</v-icon>
+                <v-avatar color="success" text-color="white" size="40">
+                  <v-icon size="20">mdi-plus</v-icon>
+                </v-avatar>
               </template>
-              <v-list-item-title class="font-weight-medium text-secondary">
+              <v-list-item-title class="font-weight-medium text-success">
                 Thêm ví mới
               </v-list-item-title>
             </v-list-item>
@@ -392,29 +418,29 @@ onMounted(async () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 220px;
 }
 
 .wallet-btn {
   border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
   transition: all 0.3s ease;
   flex-shrink: 0;
-  gap: 4px !important;
+  gap: 8px !important;
+  min-width: 180px;
+  max-width: 280px;
 }
 
 .wallet-text {
-  display: none;
-}
-
-@media (min-width: 600px) {
-  .wallet-text {
-    display: inline;
-  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  color: white;
 }
 
 .wallet-btn:hover {
-  border-color: rgba(255, 255, 255, 0.6) !important;
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .wallet-menu {
@@ -423,29 +449,61 @@ onMounted(async () => {
 
 .wallet-item {
   transition: all 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 4px;
 }
 
 .wallet-item:hover {
-  background-color: rgba(31, 58, 147, 0.05);
+  background-color: rgba(98, 5, 21, 0.08);
+}
+
+.total-wallet-item {
+  background: linear-gradient(
+    135deg,
+    rgba(98, 5, 21, 0.15) 0%,
+    rgba(194, 59, 93, 0.08) 100%
+  );
+  border-left: 4px solid transparent;
+}
+
+.total-wallet-item:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(98, 5, 21, 0.25) 0%,
+    rgba(194, 59, 93, 0.15) 100%
+  );
+  border-left-color: #C23B5D;
 }
 
 .wallet-active {
-  background-color: rgba(31, 58, 147, 0.1) !important;
-  border-left: 4px solid #1f3a93;
+  background-color: rgba(98, 5, 21, 0.15) !important;
+  border-left: 4px solid #620515;
 }
 
-.wallet-icon {
-  font-size: 1.5rem;
-  display: inline-block;
-  margin-right: 12px;
+.wallet-active.total-wallet-item {
+  background: linear-gradient(
+    135deg,
+    rgba(98, 5, 21, 0.25) 0%,
+    rgba(194, 59, 93, 0.15) 100%
+  );
+  border-left-color: #C23B5D;
+}
+
+.wallet-avatar {
+  transition: all 0.2s ease;
+}
+
+.wallet-item:hover .wallet-avatar {
+  transform: scale(1.1);
 }
 
 .add-wallet-btn {
   transition: all 0.2s ease;
+  border-radius: 8px;
 }
 
 .add-wallet-btn:hover {
-  background-color: rgba(6, 214, 160, 0.1);
+  background-color: rgba(76, 175, 80, 0.1);
 }
 
 .modern-drawer {
@@ -458,7 +516,7 @@ onMounted(async () => {
 .drawer-header {
   padding: 20px 24px;
   padding-top: max(20px, env(safe-area-inset-top));
-  background: linear-gradient(135deg, #1f3a93 0%, #2e5090 100%);
+  background: linear-gradient(135deg, #620515 0%, #8B1538 100%);
   color: white;
   border-radius: 0 0 16px 0;
 }
@@ -486,7 +544,7 @@ onMounted(async () => {
 }
 
 .gradient-title {
-  background: linear-gradient(135deg, #1f3a93 0%, #06d6a0 100%);
+  background: linear-gradient(135deg, #620515 0%, #C23B5D 100%);
   color: white;
   font-weight: 600;
 }

@@ -76,7 +76,14 @@
         <v-card elevation="2">
           <v-card-title>Chi Tiêu Theo Danh Mục</v-card-title>
           <v-card-text>
-            <div id="expense-pie-chart" class="chart-container">
+            <div
+              v-if="metrics.expenseByCategory.length === 0"
+              class="text-center pa-8 text-grey"
+            >
+              <v-icon size="48" color="grey" class="mb-2">mdi-chart-pie</v-icon>
+              <p>Không có dữ liệu chi tiêu</p>
+            </div>
+            <div v-else id="expense-pie-chart" class="chart-container">
               <canvas ref="expensePieChart"></canvas>
             </div>
           </v-card-text>
@@ -87,7 +94,14 @@
         <v-card elevation="2">
           <v-card-title>Thu Nhập Theo Danh Mục</v-card-title>
           <v-card-text>
-            <div id="income-pie-chart" class="chart-container">
+            <div
+              v-if="metrics.incomeByCategory.length === 0"
+              class="text-center pa-8 text-grey"
+            >
+              <v-icon size="48" color="grey" class="mb-2">mdi-chart-pie</v-icon>
+              <p>Không có dữ liệu thu nhập</p>
+            </div>
+            <div v-else id="income-pie-chart" class="chart-container">
               <canvas ref="incomePieChart"></canvas>
             </div>
           </v-card-text>
@@ -100,7 +114,16 @@
         <v-card elevation="2">
           <v-card-title>Xu Hướng Thu Chi Hàng Tháng</v-card-title>
           <v-card-text>
-            <div id="monthly-trend-chart" class="chart-container">
+            <div
+              v-if="metrics.monthlyTrend.length === 0"
+              class="text-center pa-8 text-grey"
+            >
+              <v-icon size="48" color="grey" class="mb-2"
+                >mdi-chart-line</v-icon
+              >
+              <p>Không có dữ liệu theo tháng</p>
+            </div>
+            <div v-else id="monthly-trend-chart" class="chart-container">
               <canvas ref="monthlyChart"></canvas>
             </div>
           </v-card-text>
@@ -174,9 +197,9 @@ const incomePieChart = ref<HTMLCanvasElement | null>(null);
 const monthlyChart = ref<HTMLCanvasElement | null>(null);
 
 const chartInstances = ref<{
-  expense?: Chart;
-  income?: Chart;
-  monthly?: Chart;
+  expense?: any;
+  income?: any;
+  monthly?: any;
 }>({});
 
 const recentTransactions = computed(() => {
@@ -217,8 +240,8 @@ const destroyCharts = () => {
 const initializePieChart = (
   canvasRef: HTMLCanvasElement | null,
   data: any[],
-  label: string,
-  color: string,
+  _label: string,
+  _color: string,
   chartType: "expense" | "income",
 ) => {
   if (!canvasRef || !data || data.length === 0) return;
@@ -271,8 +294,7 @@ const initializePieChart = (
             usePointStyle: true,
             pointStyle: "circle",
           },
-          onClick: null,
-        },
+        } as any,
         tooltip: {
           backgroundColor: "rgba(0, 0, 0, 0.8)",
           padding: 12,
@@ -379,8 +401,7 @@ const initializeLineChart = () => {
             usePointStyle: true,
             pointStyle: "circle",
           },
-          onClick: null,
-        },
+        } as any,
         tooltip: {
           backgroundColor: "rgba(0, 0, 0, 0.8)",
           padding: 12,
@@ -405,7 +426,7 @@ const initializeLineChart = () => {
           beginAtZero: true,
           grid: {
             color: "rgba(0, 0, 0, 0.05)",
-            drawBorder: false,
+            display: true,
           },
           ticks: {
             font: { size: 12 },
@@ -417,7 +438,6 @@ const initializeLineChart = () => {
         x: {
           grid: {
             display: false,
-            drawBorder: false,
           },
           ticks: {
             font: { size: 12 },
@@ -434,22 +454,25 @@ const initializeCharts = () => {
   destroyCharts();
   // Give the DOM time to update before re-initializing charts
   setTimeout(() => {
+    // Use fresh metrics data
+    const currentMetrics = metrics.value;
+
     initializePieChart(
       expensePieChart.value,
-      metrics.value.expenseByCategory,
+      currentMetrics.expenseByCategory,
       "Chi Tiêu",
       "red",
       "expense",
     );
     initializePieChart(
       incomePieChart.value,
-      metrics.value.incomeByCategory,
+      currentMetrics.incomeByCategory,
       "Thu Nhập",
       "green",
       "income",
     );
     initializeLineChart();
-  }, 200);
+  }, 300);
 };
 
 onMounted(() => {
