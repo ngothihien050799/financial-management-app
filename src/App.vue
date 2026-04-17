@@ -201,7 +201,7 @@
 
     <!-- Main Content -->
     <v-main class="main-content">
-      <v-container fluid class="pa-6">
+      <v-container fluid class="pa-6" style="margin-top: 20px">
         <!-- Dashboard Component -->
         <dashboard v-if="currentPage === 'Dashboard'" />
         <!-- Income Expense Management -->
