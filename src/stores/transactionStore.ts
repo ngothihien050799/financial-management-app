@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import type { Transaction, Wallet, FinancialMetrics, MonthlyData, CategoryStats } from '@/types'
 import { db } from '@/lib/firebase'
+import { syncTransactionToGoogleSheet } from '@/lib/googleSheets'
 import {
   collection,
   addDoc,
@@ -156,7 +157,14 @@ const addTransaction = async (transaction: Omit<Transaction, 'id' | 'createdAt'>
       createdAt: new Date()
     }
     state.transactions.push(newTransaction)
-    
+
+    const wallet = state.wallets.find(w => w.id === transaction.walletId)
+    if (wallet) {
+      syncTransactionToGoogleSheet(newTransaction, wallet, 'add').catch(err => {
+        console.warn('Google Sheets sync failed on add:', err)
+      })
+    }
+
     // Update wallet balance
     updateWalletBalance(transaction.walletId)
   } catch (err: any) {
@@ -181,6 +189,13 @@ const deleteTransaction = async (id: string) => {
     if (index > -1) {
       const deleted = state.transactions.splice(index, 1)[0]
       updateWalletBalance(deleted.walletId)
+
+      const wallet = state.wallets.find(w => w.id === deleted.walletId)
+      if (wallet) {
+        syncTransactionToGoogleSheet(deleted, wallet, 'delete').catch(err => {
+          console.warn('Google Sheets sync failed on delete:', err)
+        })
+      }
     }
   } catch (err: any) {
     error.value = err.message || 'Lỗi khi xóa giao dịch'
@@ -209,6 +224,13 @@ const updateTransaction = async (id: string, updatedData: Partial<Transaction>) 
 
     Object.assign(transaction, updatedData)
     updateWalletBalance(transaction.walletId)
+
+    const wallet = state.wallets.find(w => w.id === transaction.walletId)
+    if (wallet) {
+      syncTransactionToGoogleSheet(transaction, wallet, 'update').catch(err => {
+        console.warn('Google Sheets sync failed on update:', err)
+      })
+    }
   } catch (err: any) {
     error.value = err.message || 'Lỗi khi cập nhật giao dịch'
     console.error('Error updating transaction:', err)
