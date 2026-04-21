@@ -13,7 +13,7 @@
     <link rel="manifest" href="/manifest.json" />
     
     <!-- Apple Web App Support -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Finance Hub" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
@@ -63,7 +63,7 @@
       const installBtn = document.getElementById('install-btn');
       
       window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
+        // e.preventDefault(); // Commented out to allow default browser banner and hide console warning
         deferredPrompt = e;
         
         if (installBtn) {
